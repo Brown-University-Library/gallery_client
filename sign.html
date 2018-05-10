@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang=en-us>
+<!-- This is the sign view -->
+
+<head>
+  <link href="styles/main-sign.css" rel="stylesheet"></link>
+  <style>
+    body.dg-sign {
+      background: black;
+      font-family: monospace;
+      color: white;
+      font-size: 50px;
+      /*transform: scale(0.3);*/
+      transform-origin: top left;
+      /*overflow: hidden;*/
+    }
+    /*
+    .dg-sign * {      
+      -webkit-transition: opacity 2s;
+      transition: opacity 2s;
+    }*/
+    
+    .dg-sign .text-container {
+      width: 1920px;
+      height: 270px;
+      position: absolute;
+      top: 810px; left: 0;
+      padding-left: 100px;
+    }
+    
+    .dg-sign .content {
+      border: none;
+      width: 1920px;
+      height: 1080px;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    
+    .dg-sign .title {
+      font-size: 100%;
+    }
+    
+    .dg-sign .description,
+    .dg-sign .author,
+    .dg-sign .date {
+      font-size: 80%;
+    }
+    
+    .dg-sign .mobile-link {
+      position: fixed;
+      /*bottom: 0;*/
+      right: 0;
+      width: 100px;
+      /*height: 110px;*/
+      background: white;
+      margin: 0;
+      padding: 5px;
+      color:black;
+      text-align: center;
+      font-size: 10px;
+    }
+    
+    .dg-sign .mobile-link canvas {
+      margin: 1em 0 0 0;
+    }
+    
+  </style>
+</head>
+
+<body class="dg-sign">
+  <div class="text-container">
+    <h1 class="title">[TITLE]</h1>
+    <!--<p class="description">[Description]</p>-->
+    <p class="author">[Author]</p>
+    <!--<p class="date">[Date]</p>-->
+  </div>
+  <iframe class="content"></iframe>
+  <div class="mobile-link">
+    Follow along!
+  </div>
+</body>
+<script data-main="scripts/main-sign" src="scripts/require.js"></script>
+</html>

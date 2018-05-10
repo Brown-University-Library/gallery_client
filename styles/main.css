@@ -1,0 +1,52 @@
+
+body {
+  background: black;
+  color: white;
+}
+
+#dg-program h4 {
+  width: 100%;
+  margin: 0;
+  background-color: #a00;
+  border-bottom: 2px solid black;
+}
+
+#dg-program h4,
+#dg-program .dg-details {
+  padding: 1rem;
+}
+
+#dg-program h4 > a,
+#dg-program h4 > a > small {
+  color: white;
+}
+
+#dg-program .dg-creator {
+  white-space: nowrap;
+}
+
+/*
+
+body {
+  padding: 100px 10% 0 10%;
+}
+
+img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100px;
+  height: 100px;
+}
+
+h1 {
+  position: absolute;
+  top: 0;
+  left: 100px;
+  height: 100px;
+  margin: 0;
+  padding: 1em;
+  background: blue;
+}
+
+*/
