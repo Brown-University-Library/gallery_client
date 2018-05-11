@@ -4,17 +4,6 @@
 
 /*
 
-From Joseph:
-I've got the gallery api app working and the security relaxed enough to be useful.
-https://daxdev.services.brown.edu/gallery/api/programs/
-
-Will list all programs available and
-https://daxdev.services.brown.edu/gallery/api/programs/1/
-will return a single program.
-
-Note: I will change slides to be presentations eventually (CHANGE MADE - PR), but this gives you something to play around with.
-UPDATE: Joseph has created a new presentation at: https://daxdev.services.brown.edu/gallery/api/programs/2/
-
 Here is a sample url for accessing an item's information using the BDR apis
 given a pid of bdr:263018
 the url for the api is https://repository.library.brown.edu/api/items/bdr:263018/
@@ -25,7 +14,7 @@ display_inline code (as of 2015/04/13):
 <iframe name="contentIframe" src="https://repository.library.brown.edu/fedora/objects/bdr:263018/datastreams/DOCUMENTARY/content" width="100%" height="800" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 
 
-[
+const SAMPLE_PROGRAM = [
     {
         "id": 1,
         "name": "First Program",
@@ -53,18 +42,15 @@ define(['jquery', 'BDR'], function ($, BDR) {
 
     // https://daxdev.services.brown.edu/gallery/api/programs/?format=jsonp&callback=gfjkdl
 
-    var ROOT_URI = 'https://daxdev.services.brown.edu/gallery/api/',
-        ALL_PROGRAMS_URI = ROOT_URI + 'programs/',
-        programData = [], // Cache of programs
+    var programData = [], // Cache of programs
         SIGN_ID, // Unique identifier for this sign OR the sign the viewer is paired with
         role;
 
     // Is this a client for a sign, a mobile viewer, or ...?
-    
+
     function whatAmI() {
-      
       var fileName = /[^\/]*$/.exec(window.location.pathname)[0];
-      
+
       if (role === undefined) {
         if (fileName === '') {
           role = 'DEFAULT';
@@ -74,29 +60,26 @@ define(['jquery', 'BDR'], function ($, BDR) {
           role = null;
         }
       }
-      
+
       return role;
     }
-    
+
     function isSign() {
       return (whatAmI() === 'SIGN')
     }
-    
+
     // Get the sign ID -- look to the URL's search, which has ?sign=<UNIQUE_ID>
     // Otherwise, if this is a sign, generate random (should they query the user?)
-    
+
     function getSignId() {
 
       var s;
-      
-      if (SIGN_ID === undefined) {
-        
-        var s = /sign=([^&]*)$/.exec(window.location.search);
-        
 
-          console.log('S IS THIS');
+      if (SIGN_ID === undefined) {
+
+        var s = /sign=([^&]*)$/.exec(window.location.search);
           console.log(s);
-        
+
         if (s === null && whatAmI() === 'SIGN') {
           SIGN_ID = 's' + (new Date()).valueOf();
         } else if (s !== null) {
@@ -108,17 +91,13 @@ define(['jquery', 'BDR'], function ($, BDR) {
 
       return SIGN_ID;
     }
-    
+
     function getProgramUri(programIndex) {
-      // return ROOT_URI + 'programs/' + programIndex;
-      // TEMP - static file on github
-      return 'https://raw.githubusercontent.com/prashleigh/' + 
-        'distributed-gallery/master/sites/distributed-gallery' +
-        '/data/3.json'; 
+       return './data/' + programIndex +'.json';
     }
-    
+
     // Given a presentationId, what's the one after that?
-    
+
     function getPresentationIdAfter(presentationId) {
       return (presentationId + 1) % programData.presentations.length;
     }
@@ -140,7 +119,7 @@ define(['jquery', 'BDR'], function ($, BDR) {
     }
 
     function getProgram(programId, fn) {
-      
+
       if (programData[programId] === undefined) {
         $.getJSON(getProgramUri(programId), function (program) {
           programData[programId] = program;
@@ -148,17 +127,17 @@ define(['jquery', 'BDR'], function ($, BDR) {
         });
       } else { fn(programData[programId]); }
     }
-    
+
     function getPresentation(programId, presentationId, fn) {
       getProgram(programId, function () {
         programData // IS THIS DONE??
       });
     }
-    
+
     function getPreloadedPresentation(presentationId) {
       return programData.presentations[presentationId];
     }
-    
+
     function getProgramLength() {
       return programData.presentations.length;
     }
@@ -194,12 +173,9 @@ define(['jquery', 'BDR'], function ($, BDR) {
         
         if (bdrItemInfo.creator_string !== undefined &&
             bdrItemInfo.creator_string[0] !== undefined) {
-          // presentationBDRData.creators = bdrItemInfo.creator_string;
-          // presentationBDRData.creator = bdrItemInfo.creator_string[0];
           presentationBDRData.creators = bdrItemInfo.creator_string.map(straightenName);
         } else if (bdrItemInfo.brief.contributors !== undefined &&
                    bdrItemInfo.brief.contributors[0] !== undefined) {
-          // presentationBDRData.creator = bdrItemInfo.brief.contributors[0];
           presentationBDRData.creators = bdrItemInfo.brief.contributors.map(straightenName);
         }
         
@@ -227,10 +203,6 @@ define(['jquery', 'BDR'], function ($, BDR) {
         // Thumbnail
         
         presentationBDRData.thumbnailUrl = bdrItemInfo.thumbnail;
-
-        console.log("ABVCD");
-        console.log(presentationBDRData.thumbnailUrl);
-        
         fn(presentationBDRData);
       });
     }
